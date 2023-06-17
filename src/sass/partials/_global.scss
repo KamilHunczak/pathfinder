@@ -1,0 +1,25 @@
+*,
+*::after,
+*::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: $font-main;
+}
+
+body{
+    min-height: 150vh;
+    background: $color-dark url(../images/background.jpg) no-repeat center 0%;
+    background-size: auto 50%;
+    position: relative;
+    &::after{
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        height: 50%;
+        width: 100%;
+        background: linear-gradient(0deg, $color-dark 0%, rgba(255,255,255,0) 100%);
+        transform: translate(0, 30%);
+    }
+}

@@ -1,0 +1,9 @@
+.main-nav{
+    position: relative;
+    justify-content: center;
+    padding: 2rem 0;
+    z-index: 9999;
+    a{
+        @include button($color-light);
+    }
+}

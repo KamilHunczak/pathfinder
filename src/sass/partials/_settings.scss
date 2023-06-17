@@ -1,0 +1,18 @@
+/* Colors */
+$color-light: #ffffff;
+$color-chosen: #c24E00;
+$color-route: #2ECC71;
+$color-end: #e74c3c;
+$color-dark: #131313;
+
+/* Fonts */
+$font-main: 'Source Sans 3', sans-serif;
+
+/* Mixins */
+@mixin button($color-light){
+    color: $color-light;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 1.2rem;
+}
