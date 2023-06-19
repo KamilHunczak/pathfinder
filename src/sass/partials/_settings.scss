@@ -5,6 +5,8 @@ $color-route: #2ECC71;
 $color-end: #e74c3c;
 $color-dark: #131313;
 
+$base-size: 14px;
+
 /* Fonts */
 $font-main: 'Source Sans 3', sans-serif;
 
@@ -14,5 +16,13 @@ $font-main: 'Source Sans 3', sans-serif;
     text-transform: uppercase;
     text-decoration: none;
     font-weight: normal;
-    font-size: 1.2rem;
+    font-size: $base-size * 2;
+    margin: 0 $base-size * 5;
 }
+
+@mixin center() {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }

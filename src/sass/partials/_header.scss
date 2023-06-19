@@ -1,9 +1,27 @@
-.main-nav{
+.header{
     position: relative;
-    justify-content: center;
-    padding: 2rem 0;
-    z-index: 9999;
-    a{
-        @include button($color-light);
+    // min-height: 300px;
+    .main-nav{
+        position: relative;
+        justify-content: center;
+        padding: ($base-size * 3) 0;
+        z-index: 9999;
+        a{
+            @include button($color-light);
+        }
+    }
+    .splash{
+        margin: ($base-size * 8) 0;
+        position: relative;
+        height: $base-size * 20;
+        z-index: 1;
+        .title-wrapper{
+            @include center;
+
+            .subtitle{
+                text-align: right;
+                transform: translate(0 - $base-size * 2);
+            }
+        }
     }
 }

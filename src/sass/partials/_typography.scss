@@ -1,0 +1,61 @@
+h1{
+    color: $color-light;
+    text-transform: uppercase;
+    font-size: $base-size * 6;
+    letter-spacing: $base-size * 3.5;
+
+}
+
+h2{
+    color: $color-light;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: $base-size;
+}
+
+h3{
+    color: $color-light;
+    font-size: $base-size * 3;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: $base-size * 0.5;
+}
+
+h4{
+    color: $color-light;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: $base-size * 2;
+}
+
+@media (max-width: 768px) {
+    h1{
+        font-size: $base-size * 2;
+        letter-spacing: $base-size * 2;
+    }
+    h2{
+        font-size: $base-size;
+    }
+    h3{
+        font-size: $base-size * 1.5;
+    }
+    h4{
+        font-size: $base-size * 1;
+
+    }
+  }
+  @media (min-width: 768px) and (max-width: 990px) {
+    h1{
+        font-size: $base-size * 4;
+    }
+    h2{
+        font-size: $base-size;
+    }
+    h3{
+        font-size: $base-size * 2;
+    }
+    h4{
+        font-size: $base-size * 1.5;
+
+    }
+  }
