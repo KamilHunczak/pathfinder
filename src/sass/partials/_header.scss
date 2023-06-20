@@ -8,6 +8,22 @@
         z-index: 9999;
         a{
             @include button($color-light);
+            transition: $transition;
+            overflow: hidden;
+            text-align: center;
+
+            &::after{
+                content: "";
+                display: block;
+                transform: translate(250%, 0);
+                height: 2px;
+                width: 50%;
+                background-color: $color-light;
+                transition: $transition;
+            }
+            &:hover::after{
+                transform: translate(50%, 0);
+            }
         }
     }
     .splash{

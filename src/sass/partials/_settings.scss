@@ -7,6 +7,8 @@ $color-dark: #131313;
 
 $base-size: 14px;
 
+$transition: 0.2s;
+
 /* Fonts */
 $font-main: 'Source Sans 3', sans-serif;
 
@@ -17,7 +19,7 @@ $font-main: 'Source Sans 3', sans-serif;
     text-decoration: none;
     font-weight: normal;
     font-size: $base-size * 2;
-    margin: 0 $base-size * 5;
+    margin: 0 $base-size * 2;
 }
 
 @mixin center() {
