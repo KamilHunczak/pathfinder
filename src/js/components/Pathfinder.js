@@ -20,6 +20,7 @@ class Pathfinder {
 
         thisPathfinder.dom.board = thisPathfinder.element.querySelector(select.containerOf.pathifinderBoard);
         let y = 10;
+        let id = 1;
 
         for (let i = 0; i < 10 ; i++){
             const row = document.createElement('div');
@@ -31,12 +32,14 @@ class Pathfinder {
                 field.className = 'col-1 field';
                 field.dataset.y = y;
                 field.dataset.x = x;
+                field.dataset.id = id;
                 row.appendChild(field);
                 x ++;
-            }
+                id ++;
+                }
             y = y-1;
         }
-    }
+    }a
 
     getElements(){
         const thisPathfinder = this;
@@ -66,6 +69,7 @@ class Pathfinder {
         })
 
     }
+
     chooseStart(field){
         const thisPathfinder = this;
 
@@ -89,6 +93,7 @@ class Pathfinder {
 
 
     }
+
     setStart(){
         const thisPathfinder = this;
 
