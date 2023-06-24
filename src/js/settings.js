@@ -5,5 +5,6 @@ export const select = {
     containerOf:{
         pages: '#pages',
         pathFinder: '#pathfinder',
+        pathifinderBoard: '.pathifinder_board',
     }
 }

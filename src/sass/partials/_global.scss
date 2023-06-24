@@ -11,7 +11,7 @@ body{
     min-height: 150vh;
     background: $color-dark url(../images/background.jpg) no-repeat center 0%;
     background-size: 100vw auto;
-    // position: relative;
+    position: relative;
     overflow-x: hidden;
     &::after{
         content: "";

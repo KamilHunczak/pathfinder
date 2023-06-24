@@ -1,21 +1,39 @@
 #pathfinder{
-    position: relative;
     z-index: 9999;
-    height: 50vh;
-    width: 50vh;
-    .row{
-        height: 10%;
-        width: 100%;
+        .pathifinder_board{
         position: relative;
-        .field{
+        z-index: 9999;
+        height: 50vh;
+        width: 50vh;
+        margin: 0 auto;
+        .row{
+            height: 10%;
+            width: 100%;
             position: relative;
-            width: 10%;
-            border: 1px solid $color-light;
-            cursor: pointer;
+            .field{
+                position: relative;
+                width: 10%;
+                border: 1px solid $color-light;
+                cursor: pointer;
 
+            }
+            .chosen{
+                background-color: $color-chosen;
+            }
+            .setStart{
+                background-color: $color-end;
+            }
         }
-        .chosen{
-            background-color: $color-chosen;
-        }
+    }
+    .pathfinder_button{
+        background-color: $color-light;
+        border: $color-route;
+        font-size: $base-size * 2;
+        margin: 45px auto;
+        padding: 5px;
+        text-align: center;
+        display: block;
+        width: 30%;
+
     }
 }
