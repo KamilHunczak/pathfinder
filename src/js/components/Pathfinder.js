@@ -39,7 +39,7 @@ class Pathfinder {
                 }
             y = y-1;
         }
-    }a
+    }
 
     getElements(){
         const thisPathfinder = this;
