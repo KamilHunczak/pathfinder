@@ -8,6 +8,8 @@ class Pathfinder {
         thisPathifinder.dom = {};
         thisPathifinder.settings = {
             isStarted : false,
+            drawAllowed : false,
+            area: [],
         }
 
         thisPathifinder.renderBoard();
@@ -55,15 +57,35 @@ class Pathfinder {
         thisPathfinder.element.addEventListener('click', function(event){
             if(thisPathfinder.settings.isStarted == false && event.target.classList.contains('field')){
                 thisPathfinder.chooseStart(event.target);
-                console.log(event.target);
             }
 
         })
 
-        /* add event listeners for button to dispatch event with load that includes position, and distance to closest fields from it*/
+        /* add event listeners for button to set start position*/
         thisPathfinder.dom.button.addEventListener('click', function(){
             if(thisPathfinder.settings.isStarted == false){
-            thisPathfinder.setStart();
+                const id = thisPathfinder.settings.startFieldID;
+                const startField = thisPathfinder.element.querySelector('[data-id="'+ id + '"]')
+                console.log(startField);
+            thisPathfinder.setStart(startField);
+            }
+        })
+
+        thisPathfinder.element.addEventListener('click', function(event){
+            if(thisPathfinder.settings.drawAllowed == true
+                && event.target.classList.contains('drawAllowed')){
+                    console.log(event.target)
+                    thisPathfinder.drawArea(event.target);
+            }
+
+        })
+
+        thisPathfinder.element.addEventListener('click', function(event){
+            if(thisPathfinder.settings.drawAllowed == true
+                && (event.target.classList.contains('areaAllowed') ||
+                    event.target.classList.contains('area')) ){
+                    console.log(event.target)
+                    thisPathfinder.drawArea(event.target);
             }
 
         })
@@ -79,40 +101,69 @@ class Pathfinder {
             x : posX,
             y : posY,
         }
+        thisPathfinder.settings.startFieldID = field.getAttribute('data-id');
 
         for(let item of thisPathfinder.dom.fields){
             item.classList.toggle('chosen', item == field);
-            thisPathfinder.dom.board.addEventListener('update', function(){
-                if(item == field){
-                item.classList.add('setStart');
-                thisPathfinder.settings.isStarted = true;
-                }
-            })
         }
-        console.log(thisPathfinder);
-
-
     }
 
-    setStart(){
+    setStart(field){
+        const thisPathfinder = this;
+        console.log('setStart');
+
+        for(let item of thisPathfinder.dom.fields){
+            item.classList.toggle('setStart', item == field);
+        }
+        thisPathfinder.settings.isStarted = true;
+        thisPathfinder.settings.drawAllowed = true;
+
+        thisPathfinder.drawArea(field);
+    }
+
+    drawArea(field){
         const thisPathfinder = this;
 
-        const load = {
-            position: {
-                x: thisPathfinder.settings.startPosition.x,
-                y: thisPathfinder.settings.startPosition.y,
-            },
-            distance: 0,
+        const fields =thisPathfinder.dom.fields;
+
+        console.log(thisPathfinder.settings.area);
+
+        if(thisPathfinder.settings.area.indexOf(field.dataset.id) == -1){
+            thisPathfinder.settings.area.push(field.dataset.id);
+        } else {
+            const index = thisPathfinder.settings.area.indexOf(field.dataset.id);
+            thisPathfinder.settings.area.splice(index);
         }
 
-        const event = new CustomEvent ('update', {
-            bubbles: true,
-            detail: {
-                field: load,
+
+        for (let item of fields){
+            item.classList.remove('areaAllowed');
+        }
+
+        for (let item of fields){
+            for (let areaField of thisPathfinder.settings.area){
+                if (item.dataset.id == areaField){
+                    const x = parseInt(item.dataset.x);
+                    const y = parseInt(item.dataset.y);
+
+                    const areaAllowed = [
+                    thisPathfinder.element.querySelector('[data-x="'+ x +'"][data-y="'+ (y+1) +'"]'),
+                    thisPathfinder.element.querySelector('[data-x="'+ (x+1) +'"][data-y="'+ y +'"]'),
+                    thisPathfinder.element.querySelector('[data-x="'+ x +'"][data-y="'+ (y-1) +'"]'),
+                    thisPathfinder.element.querySelector('[data-x="'+ (x-1) +'"][data-y="'+ y +'"]'),
+                    ]
+
+                    for (let areaAllowedField of areaAllowed){
+                        if(!areaAllowedField.classList.contains('area')){
+                            areaAllowedField.classList.add('areaAllowed');
+                        }
+
+                    }
+                }
             }
-        })
-        thisPathfinder.dom.board.dispatchEvent(event);
+        }
     }
+
 }
 
 export default Pathfinder;

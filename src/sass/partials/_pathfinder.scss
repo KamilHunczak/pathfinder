@@ -1,5 +1,6 @@
 #pathfinder{
     z-index: 9999;
+    position: relative;
         .pathifinder_board{
         position: relative;
         z-index: 9999;
@@ -23,8 +24,14 @@
             .setStart{
                 background-color: $color-end;
             }
-        }
+            .areaAllowed{
+                background-color: yellow;
+            }
+            .area{
+                background-color: pink;
+            }
     }
+}
     .pathfinder_button{
         background-color: $color-light;
         border: $color-route;
