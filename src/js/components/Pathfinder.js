@@ -1,4 +1,5 @@
 import { select } from "../settings.js";
+import { settings } from "../settings.js";
 
 class Pathfinder {
     constructor(element){
@@ -9,6 +10,8 @@ class Pathfinder {
         thisPathifinder.settings = {
             isStarted : false,
             drawAllowed : false,
+            chooseStartPosition: false,
+            chooseEndPosition: false,
             area: [],
         }
 
@@ -21,15 +24,15 @@ class Pathfinder {
         const thisPathfinder = this;
 
         thisPathfinder.dom.board = thisPathfinder.element.querySelector(select.containerOf.pathifinderBoard);
-        let y = 10;
+        let y = settings.board.heigh;
         let id = 1;
 
-        for (let i = 0; i < 10 ; i++){
+        for (let i = 0; i < settings.board.heigh ; i++){
             const row = document.createElement('div');
             row.className = 'row justify-content-center row' + (i+1);
             let x = 1;
             thisPathfinder.dom.board.appendChild(row);
-            for(let z = 0; z < 10 ; z++){
+            for(let z = 0; z < settings.board.width ; z++){
                 const field = document.createElement('div');
                 field.className = 'col-1 field';
                 field.dataset.y = y;
@@ -61,30 +64,21 @@ class Pathfinder {
 
         })
 
-        /* add event listeners for button to set start position*/
+        /* add event listeners for button*/
         thisPathfinder.dom.button.addEventListener('click', function(){
             if(thisPathfinder.settings.isStarted == false){
                 const id = thisPathfinder.settings.startFieldID;
                 const startField = thisPathfinder.element.querySelector('[data-id="'+ id + '"]')
-                console.log(startField);
             thisPathfinder.setStart(startField);
+
             }
         })
 
-        thisPathfinder.element.addEventListener('click', function(event){
-            if(thisPathfinder.settings.drawAllowed == true
-                && event.target.classList.contains('drawAllowed')){
-                    console.log(event.target)
-                    thisPathfinder.drawArea(event.target);
-            }
-
-        })
-
+        /* add event listeners for drawAllowed area (div that contains '.drawAllowed' class) */
         thisPathfinder.element.addEventListener('click', function(event){
             if(thisPathfinder.settings.drawAllowed == true
                 && (event.target.classList.contains('areaAllowed') ||
                     event.target.classList.contains('area')) ){
-                    console.log(event.target)
                     thisPathfinder.drawArea(event.target);
             }
 
@@ -110,7 +104,6 @@ class Pathfinder {
 
     setStart(field){
         const thisPathfinder = this;
-        console.log('setStart');
 
         for(let item of thisPathfinder.dom.fields){
             item.classList.toggle('setStart', item == field);
@@ -126,44 +119,74 @@ class Pathfinder {
 
         const fields =thisPathfinder.dom.fields;
 
-        console.log(thisPathfinder.settings.area);
-
+        /* update area array */
         if(thisPathfinder.settings.area.indexOf(field.dataset.id) == -1){
             thisPathfinder.settings.area.push(field.dataset.id);
         } else {
             const index = thisPathfinder.settings.area.indexOf(field.dataset.id);
-            thisPathfinder.settings.area.splice(index);
+            thisPathfinder.settings.area.splice(index+1);
         }
 
-
+        /* clear class in all fields */
         for (let item of fields){
             item.classList.remove('areaAllowed');
+            item.classList.remove('area');
+
         }
 
+        /* add class '.areaAllowed' for all fields next to chosen */
         for (let item of fields){
             for (let areaField of thisPathfinder.settings.area){
                 if (item.dataset.id == areaField){
-                    const x = parseInt(item.dataset.x);
-                    const y = parseInt(item.dataset.y);
-
-                    const areaAllowed = [
-                    thisPathfinder.element.querySelector('[data-x="'+ x +'"][data-y="'+ (y+1) +'"]'),
-                    thisPathfinder.element.querySelector('[data-x="'+ (x+1) +'"][data-y="'+ y +'"]'),
-                    thisPathfinder.element.querySelector('[data-x="'+ x +'"][data-y="'+ (y-1) +'"]'),
-                    thisPathfinder.element.querySelector('[data-x="'+ (x-1) +'"][data-y="'+ y +'"]'),
-                    ]
-
-                    for (let areaAllowedField of areaAllowed){
-                        if(!areaAllowedField.classList.contains('area')){
-                            areaAllowedField.classList.add('areaAllowed');
+                    for (let nearbyId of thisPathfinder.getNearbyId(item)){
+                        const nearbyField = thisPathfinder.element.querySelector('[data-id="'+nearbyId+'"]');
+                        if(!nearbyField.classList.contains('area')){
+                            nearbyField.classList.add('areaAllowed');
                         }
-
                     }
                 }
             }
         }
+
+        /* add class '.area' for all fields with data-id matching to pathfinder.settings.srea array */
+        for (let areaID of thisPathfinder.settings.area){
+            thisPathfinder.element.querySelector('[data-id="'+ areaID +'"]').classList.add('area');
+        }
     }
 
+    getNearbyId(item){
+        const thisPathfinder = this;
+
+        const arrayToReturn = [];
+
+        const rightX = parseInt(item.getAttribute('data-x'))+1;
+        const upY    = parseInt(item.getAttribute('data-y'))+1;
+        const downY  = parseInt(item.getAttribute('data-y'))-1;
+        const leftX  = parseInt(item.getAttribute('data-x'))-1;
+
+        const right = thisPathfinder.element.querySelector(
+            '[data-x="'+ rightX +'"][data-y="'+ item.dataset.y +'"]'
+        );
+
+        const up = thisPathfinder.element.querySelector(
+            '[data-x="'+ item.dataset.x +'"][data-y="'+ upY +'"]'
+        );
+
+        const down = thisPathfinder.element.querySelector(
+            '[data-x="'+ item.dataset.x +'"][data-y="'+ downY +'"]'
+        );
+
+        const left = thisPathfinder.element.querySelector(
+            '[data-x="'+ leftX +'"][data-y="'+ item.dataset.y +'"]'
+        );
+
+        rightX <= settings.board.width ? arrayToReturn.push(right.dataset.id) : false;
+        upY    <= settings.board.heigh ? arrayToReturn.push(up.dataset.id)    : false;
+        leftX > 0 ? arrayToReturn.push(left.dataset.id) : false;
+        downY > 0 ? arrayToReturn.push(down.dataset.id) : false;
+
+        return arrayToReturn;
+    }
 }
 
 export default Pathfinder;
